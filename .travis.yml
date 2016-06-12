@@ -16,7 +16,7 @@ android:
 
 
 script:
-  - ./gradlew clean build -PdisablePreDex
+  - sh ci.sh
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
