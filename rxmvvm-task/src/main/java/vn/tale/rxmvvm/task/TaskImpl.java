@@ -47,21 +47,13 @@ class TaskImpl implements Task {
       @Override public Boolean call(Result result) {
         return result instanceof Result.Success;
       }
-    }).map(new Func1<Result, Result.Success>() {
-      @Override public Result.Success call(Result result) {
-        return (Result.Success) result;
-      }
-    });
+    }).cast(Result.Success.class);
 
     this.error = result.filter(new Func1<Result, Boolean>() {
       @Override public Boolean call(Result result) {
         return result instanceof Result.Error;
       }
-    }).map(new Func1<Result, Result.Error>() {
-      @Override public Result.Error call(Result result) {
-        return (Result.Error) result;
-      }
-    });
+    }).cast(Result.Error.class);
   }
 
   @Override public void start() {

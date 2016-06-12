@@ -127,4 +127,15 @@ public class TaskImplTest {
     successSubscriber.assertValueCount(2);
   }
 
+  @Test
+  public void testShouldReceiveMultipleError() throws Exception {
+    final TaskImpl lseViewModel = new TaskImpl(Observable.just(null));
+    final TestSubscriber<Result.Error> errorSubscriber = new TestSubscriber<>();
+    lseViewModel.error()
+        .subscribe(errorSubscriber);
+    lseViewModel.start();
+    lseViewModel.start();
+    errorSubscriber.assertValueCount(2);
+  }
+
 }
