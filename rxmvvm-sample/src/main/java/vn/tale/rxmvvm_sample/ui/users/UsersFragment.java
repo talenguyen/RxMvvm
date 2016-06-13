@@ -93,8 +93,8 @@ public class UsersFragment extends Fragment implements UsersMVVM.View {
     return ui(new Action1<List<User>>() {
       @Override
       public void call(List<User> data) {
-        vProgress.setVisibility(View.GONE);
         rvList.setVisibility(View.VISIBLE);
+        vProgress.setVisibility(View.GONE);
         adapter.setUsers(data);
         adapter.notifyDataSetChanged();
       }
