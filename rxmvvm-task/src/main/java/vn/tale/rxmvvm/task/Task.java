@@ -1,14 +1,13 @@
 package vn.tale.rxmvvm.task;
 
 import rx.Observable;
-import rx.Subscription;
 
 /**
  * Created by Giang Nguyen at Tiki on 6/10/16.
  */
 public interface Task {
 
-  Subscription start();
+  void start();
 
   Observable<Void> loading();
 

@@ -104,4 +104,38 @@ public class TaskImplTest {
     lseViewModel.start();
     loadingSubscriber.assertValue(null);
   }
+
+  @Test
+  public void testShouldReceiveMultipleLoading() throws Exception {
+    final TaskImpl lseViewModel = new TaskImpl(Observable.empty());
+    final TestSubscriber<Void> loadingSubscriber = new TestSubscriber<>();
+    lseViewModel.loading()
+        .subscribe(loadingSubscriber);
+    lseViewModel.start();
+    lseViewModel.start();
+    loadingSubscriber.assertValueCount(2);
+  }
+
+  @Test
+  public void testShouldReceiveMultipleSuccess() throws Exception {
+    final TaskImpl lseViewModel = new TaskImpl(Observable.just("Data"));
+    final TestSubscriber<Result.Success> successSubscriber = new TestSubscriber<>();
+    lseViewModel.success()
+        .subscribe(successSubscriber);
+    lseViewModel.start();
+    lseViewModel.start();
+    successSubscriber.assertValueCount(2);
+  }
+
+  @Test
+  public void testShouldReceiveMultipleError() throws Exception {
+    final TaskImpl lseViewModel = new TaskImpl(Observable.just(null));
+    final TestSubscriber<Result.Error> errorSubscriber = new TestSubscriber<>();
+    lseViewModel.error()
+        .subscribe(errorSubscriber);
+    lseViewModel.start();
+    lseViewModel.start();
+    errorSubscriber.assertValueCount(2);
+  }
+
 }

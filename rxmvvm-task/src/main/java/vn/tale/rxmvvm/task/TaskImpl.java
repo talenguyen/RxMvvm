@@ -1,12 +1,12 @@
 package vn.tale.rxmvvm.task;
 
+import com.jakewharton.rxrelay.PublishRelay;
+
 import java.util.List;
 import java.util.NoSuchElementException;
 
 import rx.Observable;
-import rx.Subscription;
 import rx.functions.Func1;
-import rx.observables.ConnectableObservable;
 
 /**
  * Created by Giang Nguyen on 6/12/16.
@@ -14,10 +14,16 @@ import rx.observables.ConnectableObservable;
 class TaskImpl implements Task {
   private final Observable<Result.Success> success;
   private final Observable<Result.Error> error;
-  private final ConnectableObservable<Void> loading;
+  private final Observable<Void> loading;
+  private final PublishRelay<Void> start;
 
   TaskImpl(Observable<?> source) {
-    loading = Observable.<Void>just(null).publish();
+    start = PublishRelay.create();
+    loading = start.switchMap(new Func1<Void, Observable<? extends Void>>() {
+      @Override public Observable<? extends Void> call(Void aVoid) {
+        return Observable.just(null);
+      }
+    });
 
     final Observable<Result> load = mapToErrorIfEmpty(source)
         .map(new Func1<Object, Result>() {
@@ -31,36 +37,27 @@ class TaskImpl implements Task {
           }
         });
 
-    final Observable<Result> result = loading.switchMap(new Func1<Void, Observable<Result>>() {
+    final Observable<Result> result = start.switchMap(new Func1<Void, Observable<Result>>() {
       @Override public Observable<Result> call(Void aVoid) {
         return load;
       }
-    })
-        .share();
+    }).share();
 
     this.success = result.filter(new Func1<Result, Boolean>() {
       @Override public Boolean call(Result result) {
         return result instanceof Result.Success;
       }
-    }).map(new Func1<Result, Result.Success>() {
-      @Override public Result.Success call(Result result) {
-        return (Result.Success) result;
-      }
-    });
+    }).cast(Result.Success.class);
 
     this.error = result.filter(new Func1<Result, Boolean>() {
       @Override public Boolean call(Result result) {
         return result instanceof Result.Error;
       }
-    }).map(new Func1<Result, Result.Error>() {
-      @Override public Result.Error call(Result result) {
-        return (Result.Error) result;
-      }
-    });
+    }).cast(Result.Error.class);
   }
 
-  @Override public Subscription start() {
-    return loading.connect();
+  @Override public void start() {
+    start.call(null);
   }
 
   @Override public Observable<Void> loading() {
