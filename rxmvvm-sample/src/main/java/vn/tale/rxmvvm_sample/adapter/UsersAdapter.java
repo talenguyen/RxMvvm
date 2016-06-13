@@ -3,6 +3,7 @@ package vn.tale.rxmvvm_sample.adapter;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vn.tale.rxmvvm_sample.model.User;
@@ -14,6 +15,10 @@ import vn.tale.rxmvvm_sample.viewholder.UserViewHolder;
  */
 public class UsersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<User> users;
+
+    public UsersAdapter() {
+        this.users = new ArrayList<>();
+    }
 
     public void setUsers(List<User> users) {
         this.users = users;

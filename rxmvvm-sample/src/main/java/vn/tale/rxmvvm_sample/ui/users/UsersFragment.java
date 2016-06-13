@@ -40,7 +40,7 @@ public class UsersFragment extends Fragment implements UsersMVVM.View {
   @BindView(R.id.vProgress) ProgressBar vProgress;
   @BindView(R.id.tvError) TextView tvError;
 
-  private UsersAdapter adapter;
+  private final UsersAdapter adapter;
   private CompositeSubscription subscription;
   public UsersViewModel viewModel;
 
@@ -65,7 +65,7 @@ public class UsersFragment extends Fragment implements UsersMVVM.View {
     rvList.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
     rvList.setAdapter(adapter);
     subscription = new CompositeSubscription();
-    subscription.add(usersBinding.bind(UsersFragment.this));
+    subscription.add(usersBinding.bind(this));
     viewModel.loadUsers();
   }
 

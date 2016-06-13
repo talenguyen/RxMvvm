@@ -14,8 +14,7 @@ import vn.tale.rxmvvm_sample.model.User;
  * Created by Giang Nguyen at Tiki on 6/8/16.
  */
 public class UserViewHolder extends RecyclerView.ViewHolder {
-    private static final String TAG = "UserViewHolder";
-    private TextView tvUserName;
+    private final TextView tvUserName;
 
     public static UserViewHolder create(ViewGroup parent) {
         final LayoutInflater inflater = LayoutInflater.from(parent.getContext());

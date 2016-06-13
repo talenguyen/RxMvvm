@@ -13,24 +13,31 @@ import vn.tale.rxmvvm_sample.model.User;
 
 public interface GitHubService {
   class Factory {
-    private static GitHubService service;
+    private static final Object LOCK = new Object();
+    private static volatile GitHubService service;
+
+    private Factory() {
+      // NoOps
+    }
 
     public static GitHubService create() {
-      if (service == null) {
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-        OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+      synchronized (LOCK) {
+        if (service == null) {
+          HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+          interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+          OkHttpClient client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.github.com/")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
+          Retrofit retrofit = new Retrofit.Builder()
+              .baseUrl("https://api.github.com/")
+              .client(client)
+              .addConverterFactory(GsonConverterFactory.create())
+              .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+              .build();
 
-        service = retrofit.create(GitHubService.class);
+          service = retrofit.create(GitHubService.class);
+        }
+        return service;
       }
-      return service;
     }
   }
 

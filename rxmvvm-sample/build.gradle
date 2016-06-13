@@ -18,6 +18,10 @@ android {
     versionName ext.versionName
   }
 
+  lintOptions {
+    warning 'InvalidPackage'
+  }
+
   buildTypes {
     debug {
       // Enables code coverage with Jacoco only for instrumentation tests.
