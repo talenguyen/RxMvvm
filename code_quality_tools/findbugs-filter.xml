@@ -22,6 +22,20 @@
              type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
     </Match>
 
+    <!-- Do not check for non-initialized fields in tests because usually we initialize them in @onCreateView -->
+    <Match>
+        <Class name="~.*Fragment"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"
+             type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+
+    <!-- Do not check for non-initialized fields in tests because usually we initialize them in @onCreate -->
+    <Match>
+        <Class name="~.*Activity"/>
+        <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"
+             type="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+    </Match>
+
     <!-- Do not check for static inner because we often use a lot like View.setOnClickListener -->
     <Match>
         <Class name="~.*"/>

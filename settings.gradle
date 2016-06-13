@@ -1,1 +1,4 @@
-include ':rxmvvm-task', ':rxmvvm-sample'
+include ':rxmvvm-sample'
+include ':rxmvvm-task'
+include ':rxmvvm-lce'
+include ':rxmvvm-lce-component'
