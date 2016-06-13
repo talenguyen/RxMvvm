@@ -42,7 +42,8 @@ android {
 dependencies {
   compile fileTree(dir: 'libs', include: ['*.jar'])
   compile project(':rxmvvm-task')
-  compile 'com.android.support:appcompat-v7:23.4.0'
+  compile project(':rxmvvm-lce')
+  compile project(':rxmvvm-lce-component')
   compile 'com.android.support:appcompat-v7:23.4.0'
   compile 'com.android.support:recyclerview-v7:23.4.0'
   compile 'com.jakewharton.rxbinding:rxbinding:0.4.0'
